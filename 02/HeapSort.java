@@ -35,7 +35,7 @@ public class HeapSort {
     public boolean doExtractMax(){
         if(this.heapSize > 0){
             extractMax(this.arr);
-            doBuildMaxHeap();
+            maxHeapify(this.arr,1);
             printArr();
             return true;
         }
@@ -91,9 +91,10 @@ public class HeapSort {
     }
 
     private Node extractMax(Node[] arr){
+        Node root = arr[1];
         swap(arr, heapSize, 1);
         this.heapSize--;
-        return arr[1];
+        return root;
     }
 
     private void insert(Node[] arr, Node x){
@@ -104,7 +105,7 @@ public class HeapSort {
         temp[temp.length - 1] = x;
         this.arr = temp;
         this.heapSize = temp.length - 1;
-        if(this.arr[this.heapSize/2].priorityNumber > this.arr[this.heapSize].priorityNumber) return;
+        if(this.heapSize != 1 && this.arr[this.heapSize/2].priorityNumber > this.arr[this.heapSize].priorityNumber) return;
         buildMaxHeap(this.arr);
     }
 
