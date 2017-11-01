@@ -104,6 +104,7 @@ public class HeapSort {
         temp[temp.length - 1] = x;
         this.arr = temp;
         this.heapSize = temp.length - 1;
+        if(this.arr[this.heapSize/2].priorityNumber > this.arr[this.heapSize].priorityNumber) return;
         buildMaxHeap(this.arr);
     }
 
