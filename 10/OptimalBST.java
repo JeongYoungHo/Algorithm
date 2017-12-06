@@ -40,32 +40,44 @@ public class OptimalBST {
     private void optimalBST(double[] p, double q[], int n){
         for(int i = 1; i <= n+1 ; i++){
             e[i][i-1] = q[i-1];
-            w[i][i-1] = q[i-1];
+            w[i][i-1] = q[i-1]; //튀어나온 부분으로 초기화됨, w[i][i-1]에(정의) 의해 q[i-1]만 남음.
         }
-        for(int l = 1; l <= n ; l++){ // root 결정 ? -> 커지면
-            for(int i = 1; i <= n-l+1; i++){  // i 범위 줄어듦
-                int j = i + l - 1;
+        for(int l = 1; l <= n ; l++){ // l값으로 j값 조정(루트 가능개수)
+            for(int i = 1; i <= n-l+1; i++){  // i 값 행 조정
+                int j = i + l - 1; // j 값 열 조정
                 e[i][j] = Integer.MAX_VALUE;
                 w[i][j] = w[i][j-1] + p[j] + q[j]; // w[i][j-1]은 p와 q 테이블에서 튀어나온부분
-                for (int r = i; r<= j; r++){
-                    double t = e[i][r-1] + e[r+1][j] + w[i][j];
-                            if( t< e[i][j] ){
+                for (int r = i; r<= j; r++){ // i와 j를 정해두고 r 조정
+                    double t = e[i][r-1] + e[r+1][j] + w[i][j]; // r을 루트로 삼았을 때의 값 계산
+                            if( t< e[i][j] ){ // 무한대로 초기화한 위치 업데이트, 제한된 키 범위 안에서 루트가 바뀔때의 값들이 최소가 될때 업데이트 하게 된다.
                                 e[i][j] = t;
-                                root[i][j] = r;
+                                root[i][j] = r; // 부모 업데이트
                             }
                 }
             }
         }
     }
 
-    public void print(){
+    public void printSearchCost(){
         for(int i = 0; i<e[0].length; i++){
             for(int j=0; j<e.length; j++){
                 System.out.printf("%3.3f   ",e[i][j]);
             }
             System.out.println();
         }
+        System.out.println("최적해 : " + e[1][lineCount - 1]);
     }
+
+    // 키는 1~5까지만 있으므로 1부터 출력
+    public void printParent(){
+        for(int i = 1; i<root[0].length; i++){
+            for(int j = 1; j<root.length; j++){
+                System.out.printf("%3d   ",root[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
     private String readFile(String filePath) {
         BufferedReader br = null;
         StringTokenizer str = null;
